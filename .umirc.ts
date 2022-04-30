@@ -2,8 +2,8 @@ import { defineConfig } from 'dumi';
 
 export default defineConfig({
   title: 'react-drag-resizable',
-  favicon: '/lightbulb.png',
-  logo: '/lightbulb.png',
+  favicon: '/react-drag-resizable/lightbulb.png',
+  logo: '/react-drag-resizable/lightbulb.png',
   outputPath: 'docs-dist',
   alias: {
     src: './src',
