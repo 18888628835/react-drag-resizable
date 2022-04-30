@@ -1,4 +1,4 @@
-# DragResizableBox 可伸缩盒子
+# 示例 example
 
 ## Basic
 
@@ -60,7 +60,7 @@ Even if you zoom in, it doesn't go out of bounds
 
 ```tsx
 import React, { useState } from 'react';
-import { DragResizableBox, Button } from 'react-drag-resizable';
+import { DragResizableBox } from 'react-drag-resizable';
 
 export default () => {
   return (

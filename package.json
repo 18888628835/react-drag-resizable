@@ -1,10 +1,22 @@
 {
   "private": false,
   "name": "react-drag-resizable",
-  "description": "React component, which can be used to drag and size, with location limits",
+  "description": "React component, which can be used to drag and resize, with location limits",
   "author": "qiuyanxi",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "keywords": [
+    "React",
+    "drag",
+    "resize"
+  ],
+  "homepage": "https://18888628835.github.io/react-drag-resizable",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/18888628835/react-drag-resizable.git"
+  },
+  "files":["dist"],
+  "main": "dist/index.js",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
@@ -16,7 +28,6 @@
     "test": "umi-test",
     "test:coverage": "umi-test --coverage"
   },
-  "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "typings": "dist/index.d.ts",
   "gitHooks": {
