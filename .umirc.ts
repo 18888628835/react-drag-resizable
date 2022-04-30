@@ -2,13 +2,14 @@ import { defineConfig } from 'dumi';
 
 export default defineConfig({
   title: 'react-drag-resizable',
-  favicon: '/public/lightbulb.png',
-  logo: '/public/lightbulb.png',
+  favicon: '/lightbulb.png',
+  logo: '/lightbulb.png',
   outputPath: 'docs-dist',
   alias: {
     src: './src',
   },
-  publicPath: '/public/',
+  base: '/react-drag-resizable/',
+  publicPath: '/react-drag-resizable/',
   apiParser: {
     propFilter: {
       // 是否忽略从 node_modules 继承的属性，默认值为 false
