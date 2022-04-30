@@ -1,6 +1,6 @@
 # 使用说明
 
-[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/18888628835/react-drag-resizable#react-drag-resizable) ![standard-readme compliant](https://img.shields.io/bundlephobia/min/react-drag-resizable) ![standard-readme compliant](https://img.shields.io/npm/v/react-drag-resizable)
+[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/18888628835/react-drag-resizable#使用说明) ![standard-readme compliant](https://img.shields.io/github/workflow/status/18888628835/react-drag-resizable/github%20pages) ![standard-readme compliant](https://img.shields.io/npm/l/react-drag-resizable) ![standard-readme compliant](https://img.shields.io/npm/v/react-drag-resizable)
 
 这是一个 React 组件，我们能够用它实现拖拽、放大、缩小，以及限制移动位置。
 
