@@ -28,9 +28,15 @@ yarn add react-drag-resizable
 import { DragResizableBox } from 'react-drag-resizable';
 ```
 
-## Contributing
+## Maintainers
 
 [@qiuyanxi](https://github.com/18888628835)
+
+## Contributing
+
+Feel free to dive in! Open an issue or submit PRs.
+
+非常欢迎你的加入！提一个 [Issue](https://github.com/18888628835/react-drag-resizable/issues) 或者提交一个 Pull Request。
 
 ## License
 
