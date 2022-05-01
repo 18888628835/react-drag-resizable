@@ -8,9 +8,10 @@ order: 4
 ```tsx
 import React, { useState } from 'react';
 import { DragResizableBox } from 'react-drag-resizable';
+import type { RectProps } from 'react-drag-resizable';
 
 export default () => {
-  const [rect, setRect] = useState({
+  const [rect, setRect] = useState<RectProps>({
     width: 100,
     height: 150,
     left: 360,
