@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const Wrap = styled.div`
   &.resizable_box {
+    box-sizing: border-box;
     position: absolute;
     z-index: 0;
     border: 1px dashed transparent;
