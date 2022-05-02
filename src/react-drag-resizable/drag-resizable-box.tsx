@@ -365,7 +365,7 @@ const DragResizableBox: React.FC<
 
   const classes = useMemo(() => {
     return classNames('resizable_box', className, {
-      checkedBox: allowResize,
+      checked: allowResize,
     });
   }, [allowResize]);
 
@@ -389,7 +389,7 @@ const DragResizableBox: React.FC<
       ].map((item) => (
         <span
           key={item}
-          className={allowResize ? `circle circle_${item}` : ''}
+          className={allowResize ? `rect rect_${item}` : ''}
           onMouseDown={(e) => onMouseDown(e, item as Direction)}
         ></span>
       ))}

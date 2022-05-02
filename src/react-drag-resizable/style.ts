@@ -1,90 +1,85 @@
 import styled from 'styled-components';
 
 export const Wrap = styled.div`
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
   &.resizable_box {
     box-sizing: border-box;
     position: absolute;
     z-index: 0;
-    border: 1px dashed transparent;
-    cursor: default;
+    border: 1px solid transparent;
+    cursor: move;
+    &:hover {
+      border-color: #09f;
+    }
   }
-  &.checkedBox {
+  &.checked {
     border-color: #09f;
-    background-color: rgba(115, 170, 229, 0.5);
   }
 
-  .circle {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
+  .rect {
+    width: 8px;
+    height: 8px;
     position: absolute;
     border: 1px solid rgba(6, 123, 239, 1);
-    background-color: #09f;
+    background-color: white;
     z-index: 10;
   }
-  .circle_left_top {
+  .rect_left_top {
     left: 0;
     top: 0;
     transform: translate(-50%, -50%);
     cursor: nwse-resize;
   }
-  .circle_left_bottom {
+  .rect_left_bottom {
     left: 0;
     bottom: 0;
     transform: translate(-50%, 50%);
     cursor: nesw-resize;
   }
-  .circle_right_top {
+  .rect_right_top {
     right: 0;
     top: 0;
     transform: translate(50%, -50%);
     cursor: nesw-resize;
   }
-  .circle_right_bottom {
+  .rect_right_bottom {
     right: 0;
     bottom: 0;
     transform: translate(50%, 50%);
     cursor: nwse-resize;
   }
-  .circle_top {
+  .rect_top {
     right: 50%;
     top: 0;
-    cursor: n-resize;
+    cursor: ns-resize;
     transform: translate(50%, -50%);
   }
-  .circle_right {
+  .rect_right {
     right: 0;
     top: 50%;
-    cursor: e-resize;
+    cursor: ew-resize;
     transform: translate(50%, -50%);
   }
-  .circle_bottom {
+  .rect_bottom {
     left: 50%;
     bottom: 0;
-    cursor: s-resize;
+    cursor: ns-resize;
     transform: translate(-50%, 50%);
   }
-  .circle_left {
+  .rect_left {
     left: 0;
     top: 50%;
-    cursor: w-resize;
+    cursor: ew-resize;
     transform: translate(-50%, -50%);
   }
   .content {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    cursor: move;
-    :hover {
-      border-color: #09f;
-      background-color: rgba(115, 170, 229, 0.5);
-    }
-  }
-  .shade {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 5;
     cursor: move;
   }
 `;
