@@ -19,35 +19,37 @@ type Direction =
   | 'right'
   | 'content';
 
-export type RectProps = {
-  left?: number;
-  top?: number;
-  width?: number;
-  height?: number;
+export type CollectedRectType = {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
 };
-export type LimitProps = {
+
+export type LimitType = {
   left: number;
   top: number;
   right: number;
   bottom: number;
 };
-export type CollectorRectProps = Required<RectProps>;
-export type CalcRectProps = CollectorRectProps;
+
+export type RectType = Partial<CollectedRectType>;
+export type CalcRectType = CollectedRectType;
 
 export interface BaseDragResizableBoxPropsProps {
   /**
    * @description  限制位移界限的坐标值
    */
-  limit: LimitProps;
+  limit: LimitType;
   /**
    * @description style中rect属性的语法糖，可传入width、height、left、top
    */
-  rect: RectProps;
+  rect: RectType;
   /**
    * @argument 参数rect为改变后的left、top、width、height
    * @description 传入onChange会使组件受控，需要传入left、top和width、height
    */
-  onChange: (rect: RectProps) => void;
+  onChange: (rect: CollectedRectType) => void;
   /**
    * @default false
    * @description   默认移动位置时相对于 document，如果需要相对于父盒子，请设置为 true
@@ -98,7 +100,7 @@ const DragResizableBox: React.FC<
   } = props;
   const [allowResize, setAllowResize] = useState(false);
   const box = useRef<HTMLDivElement | null>(null);
-  const [rectAttr, setRectAttr] = useState<RectProps>({} as RectProps);
+  const [rectAttr, setRectAttr] = useState<RectType>({} as RectType);
 
   const direction = useRef<Direction>('left');
   // 用来记录鼠标点下去时元素的属性值
@@ -124,7 +126,7 @@ const DragResizableBox: React.FC<
    */
   const handleCalcRect = useCallback(
     (
-      collectorRect: CollectorRectProps,
+      collectorRect: CollectedRectType,
       offsetInfo: {
         offsetX: number;
         offsetY: number;
@@ -132,7 +134,7 @@ const DragResizableBox: React.FC<
         shiftY: number;
       },
       e: MouseEvent,
-    ): CalcRectProps => {
+    ): CalcRectType => {
       let { left, top, width, height } = collectorRect;
       let { offsetX, offsetY, shiftX, shiftY } = offsetInfo;
       switch (direction.current) {
@@ -187,7 +189,7 @@ const DragResizableBox: React.FC<
    * @returns  计算limit 条件限制后得出的left、width、top、height 结果
    */
   const handleLimit = useCallback(
-    (rect: CollectorRectProps, limit: LimitProps): CollectorRectProps => {
+    (rect: CollectedRectType, limit: LimitType): CalcRectType => {
       let { left, top, width, height } = rect;
       switch (direction.current) {
         case 'content':

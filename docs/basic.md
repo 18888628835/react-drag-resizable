@@ -19,7 +19,7 @@ export default () => {
             width: '100%',
           }}
         >
-          click me!
+          move me!
         </div>
       </DragResizableBox>
     </div>

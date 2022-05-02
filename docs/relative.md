@@ -19,8 +19,8 @@ export default () => {
   const [rect, setRect] = useState({
     width: 100,
     height: 100,
-    left: 20,
-    top: 50,
+    left: 0,
+    top: 0,
   });
   return (
     <div
@@ -44,7 +44,7 @@ export default () => {
             width: '100%',
           }}
         >
-          click me!
+          move me!
         </div>
       </DragResizableBox>
     </div>

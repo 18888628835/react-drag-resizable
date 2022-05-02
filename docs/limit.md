@@ -20,7 +20,7 @@ export default () => {
     >
       <DragResizableBox
         rect={{ width: 100, height: 100, left: 450, top: 350 }}
-        limit={{ left: 344, top: 263, right: 642, bottom: 563 }}
+        limit={{ left: 344, top: 263, right: 644, bottom: 563 }}
         style={{ backgroundColor: 'rgb(243,235,235)' }}
       >
         <div
@@ -29,7 +29,7 @@ export default () => {
             width: '100%',
           }}
         >
-          click me!
+          move me!
         </div>
       </DragResizableBox>
     </div>

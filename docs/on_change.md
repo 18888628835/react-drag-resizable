@@ -7,11 +7,10 @@ order: 4
 
 ```tsx
 import React, { useState } from 'react';
-import { DragResizableBox } from 'react-drag-resizable';
-import type { RectProps } from 'react-drag-resizable';
+import { DragResizableBox, CollectedRectType } from 'react-drag-resizable';
 
 export default () => {
-  const [rect, setRect] = useState<RectProps>({
+  const [rect, setRect] = useState<CollectedRectType>({
     width: 100,
     height: 150,
     left: 360,
@@ -24,7 +23,7 @@ export default () => {
       <DragResizableBox
         onChange={(newRect) => setRect(newRect)}
         rect={rect}
-        limit={{ left: 344, top: 183, right: 642, bottom: 483 }}
+        limit={{ left: 344, top: 183, right: 644, bottom: 483 }}
         style={{ backgroundColor: 'rgb(243,235,235)' }}
       >
         <div
@@ -33,7 +32,7 @@ export default () => {
             width: '100%',
           }}
         >
-          click me!
+          move me!
         </div>
       </DragResizableBox>
     </div>
@@ -45,6 +44,39 @@ export default () => {
 
 For performance reasons and for certain application scenarios, using onChange allows components to be controlled, and you need to manually control the state.
 
-如果你觉得不合理，请给我提一个 Issue，我会尽快修改这个功能。
+让组件受控的好处是，你可以自主控制组件的缩小、移动行为。比如，也许你只需要放大缩小而不需要移动。
 
-If you think it is unreasonable, please send me an Issue, and I will modify this function as soon as possible..
+The advantage of having components under control is that you can control how they shrink and move. For example, maybe you just need to zoom in and out without moving.
+
+```tsx
+import React, { useState } from 'react';
+import { DragResizableBox } from 'react-drag-resizable';
+
+export default () => {
+  const [rect, setRect] = useState({
+    width: 100,
+    height: 150,
+  });
+  return (
+    <div
+      style={{ height: '300px', maxWidth: '300px', border: '1px solid red' }}
+    >
+      <DragResizableBox
+        onChange={({ width, height }) => setRect({ width, height })}
+        rect={rect}
+        limit={{ left: 344, top: 183, right: 644, bottom: 483 }}
+        style={{ backgroundColor: 'rgb(243,235,235)' }}
+      >
+        <div
+          style={{
+            padding: '10px',
+            width: '100%',
+          }}
+        >
+          I can not moving!!
+        </div>
+      </DragResizableBox>
+    </div>
+  );
+};
+```
