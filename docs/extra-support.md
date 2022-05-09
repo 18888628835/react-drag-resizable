@@ -1,6 +1,6 @@
 ---
 nav:
-order: 6
+order: 20
 ---
 
 # extra support 额外支持

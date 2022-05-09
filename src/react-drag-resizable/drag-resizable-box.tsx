@@ -67,6 +67,21 @@ export interface BaseDragResizableBoxPropsProps {
    * @description 最小高度
    */
   minHeight: number;
+  /**
+   * @default true
+   * @description 是否展示辅助线
+   */
+  guides: boolean;
+  /**
+   * @default true
+   * @description 是否需要磁吸效果
+   */
+  adsorb?: boolean;
+  /**
+   * @default 3
+   * @description 接近多少距离时触发红线
+   */
+  diff: number;
 }
 
 export type DragResizableBoxProps = Partial<
@@ -88,10 +103,18 @@ function getCoords(elem: Element) {
   };
 }
 
-const isNearly = (value1: number, value2: number) => {
-  return Math.abs(value1 - value2) <= 3;
+const initCollector = {
+  left: 0,
+  top: 0,
+  width: 0,
+  height: 0,
+  right: 0,
+  bottom: 0,
+  pointX: 0,
+  pointY: 0,
+  shiftX: 0,
+  shiftY: 0,
 };
-
 const DragResizableBox: React.FC<
   React.PropsWithChildren<DragResizableBoxProps>
 > = React.memo((props) => {
@@ -104,42 +127,33 @@ const DragResizableBox: React.FC<
     rect,
     minWidth = 20,
     minHeight = 20,
+    diff = 3,
+    adsorb = true,
+    guides = true,
     ...restProps
   } = props;
   const [allowResize, setAllowResize] = useState(false);
   const box = useRef<HTMLDivElement | null>(null);
   const [rectAttr, setRectAttr] = useState<RectType>({} as RectType);
   const allBoxRectCollector = useRef<AllBoxRectCollectorType[]>([]);
-  const lineRef = useRef({
-    line_n: null,
-    line_e: null,
-    line_s: null,
-    line_w: null,
-    line_mdx: null,
-    line_mdy: null,
-  });
+  // 辅助线
   const line_n = useRef<HTMLDivElement>(null);
   const line_e = useRef<HTMLDivElement>(null);
   const line_s = useRef<HTMLDivElement>(null);
   const line_w = useRef<HTMLDivElement>(null);
   const line_mdx = useRef<HTMLDivElement>(null);
   const line_mdy = useRef<HTMLDivElement>(null);
+  // 方向
   const direction = useRef<Direction>('left');
-
   // 用来记录鼠标点下去时元素的属性值
-  const collector = useRef({
-    left: 0,
-    top: 0,
-    width: 0,
-    height: 0,
-    right: 0,
-    bottom: 0,
-    pointX: 0,
-    pointY: 0,
-    shiftX: 0,
-    shiftY: 0,
-  });
+  const collector = useRef(initCollector);
 
+  const isNearly = useCallback(
+    (value1: number, value2: number) => {
+      return Math.abs(value1 - value2) <= diff;
+    },
+    [diff],
+  );
   const showLine = useCallback((whichLine: React.RefObject<HTMLDivElement>) => {
     whichLine.current!.hidden = false;
   }, []);
@@ -214,7 +228,7 @@ const DragResizableBox: React.FC<
   );
 
   /**
-   *
+   * handle position limit
    * @param rect mousemove 后的left、width、top、height 结果
    * @param limit 用来限制拖动范围的界限坐标
    * @returns  计算limit 条件限制后得出的left、width、top、height 结果
@@ -300,26 +314,15 @@ const DragResizableBox: React.FC<
     },
     [],
   );
-
-  const onMouseMove = useCallback((e: MouseEvent) => {
-    let { left, top, width, height, pointX, pointY, shiftX, shiftY } =
-      collector.current;
-    let offsetX = pointX - e.pageX;
-    let offsetY = pointY - e.pageY;
-
-    let curCalcRect = handleCalcRect(
-      { left, top, width, height },
-      { offsetX, offsetY, shiftX, shiftY },
-      e,
-    );
-    // 移动时处理辅助线
-    if (direction.current === 'content') {
-      hiddenLine();
+  /**
+   *  handle guidess base on curCalcRect after handleLimit
+   * @param curCalcRect 根据拖动后计算得到的rect 属性
+   */
+  const handleLines = useCallback(
+    (curCalcRect: CalcRectType) => {
       allBoxRectCollector.current.forEach((elementRect) => {
         const { top, left, width, height, bottom, right } = elementRect;
         const halfX = top + height / 2;
-        console.log('halfY', halfX);
-
         const halfY = left + width / 2;
         const conditions = {
           top: [
@@ -336,7 +339,7 @@ const DragResizableBox: React.FC<
                 top,
                 height: 2,
               },
-              adsorb: top,
+              adsorbNum: top,
             },
             {
               isNearly: isNearly(bottom, curCalcRect.top),
@@ -351,7 +354,7 @@ const DragResizableBox: React.FC<
                 top: bottom,
                 height: 2,
               },
-              adsorb: bottom,
+              adsorbNum: bottom,
             },
             {
               isNearly: isNearly(bottom, curCalcRect.top + curCalcRect.height),
@@ -366,7 +369,7 @@ const DragResizableBox: React.FC<
                 top: bottom,
                 height: 2,
               },
-              adsorb: bottom - curCalcRect.height,
+              adsorbNum: bottom - curCalcRect.height,
             },
             {
               isNearly: isNearly(top, curCalcRect.top + curCalcRect.height),
@@ -381,7 +384,7 @@ const DragResizableBox: React.FC<
                 top: top,
                 height: 2,
               },
-              adsorb: top - curCalcRect.height,
+              adsorbNum: top - curCalcRect.height,
             },
             //我的中间跟别人的中间：x轴
             {
@@ -400,7 +403,7 @@ const DragResizableBox: React.FC<
                 top: halfX,
                 height: 2,
               },
-              adsorb: halfX - curCalcRect.height / 2,
+              adsorbNum: halfX - curCalcRect.height / 2,
             },
           ],
           left: [
@@ -418,7 +421,7 @@ const DragResizableBox: React.FC<
                     ? Math.abs(curCalcRect.top - top + collector.current.height)
                     : Math.abs(bottom - curCalcRect.top),
               },
-              adsorb: left,
+              adsorbNum: left,
             },
             {
               isNearly: isNearly(left, curCalcRect.left + curCalcRect.width),
@@ -433,7 +436,7 @@ const DragResizableBox: React.FC<
                     ? Math.abs(curCalcRect.top - top + collector.current.height)
                     : Math.abs(bottom - curCalcRect.top),
               },
-              adsorb: left - curCalcRect.width,
+              adsorbNum: left - curCalcRect.width,
             },
             //我的右边跟别人的右边
             {
@@ -449,7 +452,7 @@ const DragResizableBox: React.FC<
                     ? Math.abs(curCalcRect.top - top + collector.current.height)
                     : Math.abs(bottom - curCalcRect.top),
               },
-              adsorb: right - curCalcRect.width,
+              adsorbNum: right - curCalcRect.width,
             },
             //我的左边跟别人的右边
             {
@@ -465,7 +468,7 @@ const DragResizableBox: React.FC<
                     ? Math.abs(curCalcRect.top - top + collector.current.height)
                     : Math.abs(bottom - curCalcRect.top),
               },
-              adsorb: right,
+              adsorbNum: right,
             },
             //我的 中间跟别人的中间：y 轴
             {
@@ -484,58 +487,71 @@ const DragResizableBox: React.FC<
                     ? Math.abs(curCalcRect.top - top + collector.current.height)
                     : Math.abs(bottom - curCalcRect.top),
               },
-              adsorb: halfY - curCalcRect.width / 2,
+              adsorbNum: halfY - curCalcRect.width / 2,
             },
           ],
         };
-        Object.keys(conditions).forEach((key) => {
-          conditions[key].forEach((item) => {
-            if (item.isNearly) {
-              item.showLine();
-              Object.keys(item.lineStyle).forEach(
-                (key) =>
-                  (item.lineNode.style[key] = item.lineStyle[key] + 'px'),
-              );
-              conditions[key] = item.adsorb;
-            }
-          });
-        });
-        // conditions.top.forEach((item) => {
-        //   if (item.isNearly) {
-        //     item.showLine();
-        //     Object.keys(item.lineStyle).forEach(
-        //       (key) => (item.lineNode.style[key] = item.lineStyle[key] + 'px'),
-        //     );
-        //     curCalcRect.top = item.adsorb;
-        //   }
-        // });
-        // conditions.left.forEach((item) => {
-        //   if (item.isNearly) {
-        //     item.showLine();
-        //     Object.keys(item.lineStyle).forEach(
-        //       (key) => (item.lineNode.style[key] = item.lineStyle[key] + 'px'),
-        //     );
-        //     curCalcRect.left = item.adsorb;
-        //   }
-        // });
-      });
-    }
 
-    if (limit) {
-      curCalcRect = handleLimit(curCalcRect, limit);
-    }
-    onChange
-      ? onChange({
-          ...curCalcRect,
-          width: Math.max(minWidth, curCalcRect.width),
-          height: Math.max(minHeight, curCalcRect.height),
-        })
-      : setRectAttr({
-          ...curCalcRect,
-          width: Math.max(minWidth, curCalcRect.width),
-          height: Math.max(minHeight, curCalcRect.height),
-        });
-  }, []);
+        (Object.keys(conditions) as Array<keyof typeof conditions>).forEach(
+          (key) => {
+            conditions[key].forEach(
+              ({ isNearly, lineStyle, lineNode, adsorbNum, showLine }) => {
+                if (isNearly) {
+                  showLine();
+                  (
+                    Object.keys(lineStyle) as Array<keyof typeof lineStyle>
+                  ).forEach(
+                    (key) => (lineNode!.style[key] = lineStyle[key] + 'px'),
+                  );
+                  // 允许磁吸效果
+                  if (adsorb) {
+                    curCalcRect[key] = adsorbNum;
+                  }
+                }
+              },
+            );
+          },
+        );
+      });
+    },
+    [adsorb],
+  );
+
+  const onMouseMove = useCallback(
+    (e: MouseEvent) => {
+      let { left, top, width, height, pointX, pointY, shiftX, shiftY } =
+        collector.current;
+      let offsetX = pointX - e.pageX;
+      let offsetY = pointY - e.pageY;
+
+      let curCalcRect = handleCalcRect(
+        { left, top, width, height },
+        { offsetX, offsetY, shiftX, shiftY },
+        e,
+      );
+      // 移动时处理辅助线
+      if (direction.current === 'content' && guides) {
+        hiddenLine();
+        handleLines(curCalcRect);
+      }
+
+      if (limit) {
+        curCalcRect = handleLimit(curCalcRect, limit);
+      }
+      onChange
+        ? onChange({
+            ...curCalcRect,
+            width: Math.max(minWidth, curCalcRect.width),
+            height: Math.max(minHeight, curCalcRect.height),
+          })
+        : setRectAttr({
+            ...curCalcRect,
+            width: Math.max(minWidth, curCalcRect.width),
+            height: Math.max(minHeight, curCalcRect.height),
+          });
+    },
+    [guides],
+  );
   /**
    * 收集所有相同移动盒子的 rect 属性
    */
@@ -570,7 +586,7 @@ const DragResizableBox: React.FC<
         ...position,
       });
     }
-  }, []);
+  }, [relative]);
 
   const onMouseDown = useCallback(
     (
