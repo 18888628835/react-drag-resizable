@@ -9,8 +9,8 @@ export const Wrap = styled.div`
   &.resizable_box {
     box-sizing: border-box;
     position: absolute;
-    z-index: 0;
     border: 1px solid transparent;
+    z-index: 1;
     cursor: move;
     &:hover {
       border-color: #09f;
