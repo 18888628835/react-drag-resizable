@@ -4,7 +4,7 @@
   "description": "React component, which can be used to drag and resize, with location limits",
   "author": "qiuyanxi",
   "license": "MIT",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "keywords": [
     "React",
     "drag",
