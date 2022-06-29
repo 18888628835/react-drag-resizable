@@ -1,4 +1,4 @@
-type Direction =
+export type Direction =
   | 'left_top'
   | 'left_bottom'
   | 'right_top'
