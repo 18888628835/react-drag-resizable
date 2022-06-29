@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/18888628835/react-drag-resizable/compare/v1.0.0...v1.1.0) (2022-06-29)
+
+
+### Features
+
+* add guidesColor API and rectStyle API ([c8b08bd](https://github.com/18888628835/react-drag-resizable/commit/c8b08bd541a7f91d9f1764d9306c6ae3741d3969))
+
 ## 1.1.6 (2022-05-25)
 
 ### Bug Fixes
