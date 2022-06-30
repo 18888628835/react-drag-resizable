@@ -59,7 +59,7 @@ const DragResizableBox: React.FC<
     minHeight = 20,
     diff = 3,
     guidesColor = 'rgb(248, 54, 33)',
-    rectStyle,
+    rectClassName,
     adsorb = true,
     guides = true,
     ...restProps
@@ -620,8 +620,7 @@ const DragResizableBox: React.FC<
         ].map((item) => (
           <span
             key={item}
-            style={rectStyle}
-            className={allowResize ? `rect rect_${item}` : ''}
+            className={allowResize ? `rect rect_${item} ${rectClassName}` : ''}
             onMouseDown={(e) => onMouseDown(e, item as Direction)}
           ></span>
         ))}

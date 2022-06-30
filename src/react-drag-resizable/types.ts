@@ -76,9 +76,9 @@ export interface BaseDragResizableBoxPropsProps {
    */
   guidesColor: React.CSSProperties['color'];
   /**
-   * @description 小方块样式
+   * @description 小方块的className
    */
-  rectStyle: React.CSSProperties;
+  rectClassName: string;
 }
 
 export type DragResizableBoxProps = Partial<
