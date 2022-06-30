@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/18888628835/react-drag-resizable/compare/v1.1.0...v1.2.0) (2022-06-29)
+
+
+### Features
+
+* update types.ts file ([7b6e8f2](https://github.com/18888628835/react-drag-resizable/commit/7b6e8f2c10cddbfb041c5c0258947e0b5eb1328a))
+
 ## [1.1.0](https://github.com/18888628835/react-drag-resizable/compare/v1.0.0...v1.1.0) (2022-06-29)
 
 
