@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/18888628835/react-drag-resizable/compare/v1.2.0...v1.2.1) (2025-08-27)
+
+
+### Bug Fixes
+
+* build error ([9c2e63e](https://github.com/18888628835/react-drag-resizable/commit/9c2e63ead2a10bb6d37b95c093080356627aeac5))
+
 ## [1.2.0](https://github.com/18888628835/react-drag-resizable/compare/v1.1.0...v1.2.0) (2022-06-29)
 
 
